@@ -6,7 +6,8 @@
 
 #root {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .App {
@@ -40,4 +41,20 @@
 .post-exit-active {
   transform: translateX(-350px);
   transition: all 500ms ease-in;
+}
+
+.navbar {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  list-style-type: none;
+  background-color: lightcyan;
+  border: 1px solid teal;
+  border-radius: 10px;
+}
+
+.navbar__link {
+  margin: auto;
 }
