@@ -11,12 +11,17 @@ import AppButton from './components/UI/button/AppButton';
 import { usePosts } from './hooks/usePosts';
 import PostService from './API/PostService';
 import AppLoader from './components/UI/loader/AppLoader';
+import { useFetch } from './hooks/useFetch';
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [fetchPosts, isLoading, error] = useFetch(async () => {
+    const posts = await PostService.getAll();
+    setPosts(posts);
+  });
 
   const sortedAndSearchedPosts = usePosts(posts, filter);
 
@@ -29,15 +34,6 @@ function App() {
     setModal(false);
   };
 
-  async function fetchPosts() {
-    setIsLoading(true);
-
-    const posts = await PostService.getAll();
-    setPosts(posts);
-
-    setIsLoading(false);
-  }
-
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
@@ -45,16 +41,18 @@ function App() {
   return (
     <div className="App">
       <hr style={{ margin: '15px 0', color: 'teal' }} />
-
       <AppButton onClick={() => setModal(true)}>Add Post</AppButton>
-
       <AppModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
       </AppModal>
-
       <hr style={{ margin: '15px 0', color: 'teal' }} />
-
       <PostFilter filter={filter} setFilter={setFilter} />
+
+      {error && (
+        <h2 style={{ textAlign: 'center', color: 'red', margin: '15px 0px' }}>
+          An error occurred: {error}
+        </h2>
+      )}
 
       {isLoading ? (
         <AppLoader />
