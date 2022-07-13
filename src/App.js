@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from 'react';
-// import { useRef } from 'react';
-// import ClassCounter from './components/ClassCounter';
-// import Counter from './components/Counter';
-import './styles/app.css';
 import PostList from './components/PostList';
 import PostForm from './components/PostForm';
-import { PostFilter } from './components/PostFilter';
 import AppModal from './components/UI/modal/AppModal';
 import AppButton from './components/UI/button/AppButton';
-import { usePosts } from './hooks/usePosts';
 import PostService from './API/PostService';
 import AppLoader from './components/UI/loader/AppLoader';
+import { usePosts } from './hooks/usePosts';
+import { PostFilter } from './components/PostFilter';
 import { useFetch } from './hooks/useFetch';
+import { getPageCount } from './utils/pagination';
+import './styles/app.css';
+import AppPagination from './components/UI/pagination/AppPagination';
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
 
-  const [fetchPosts, isLoading, error] = useFetch(async () => {
-    const posts = await PostService.getAll();
+  const [fetchPosts, isLoading, error] = useFetch(async (limit, page) => {
+    const { data: posts, headers } = await PostService.getAll(limit, page);
     setPosts(posts);
+    const totalCount = headers['x-total-count'];
+    setTotalPages(getPageCount(totalCount, limit));
   });
 
   const sortedAndSearchedPosts = usePosts(posts, filter);
+
+  const changePage = (page) => {
+    setPage(page);
+    fetchPosts(limit, page);
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -40,7 +49,6 @@ function App() {
 
   return (
     <div className="App">
-      <hr style={{ margin: '15px 0', color: 'teal' }} />
       <AppButton onClick={() => setModal(true)}>Add Post</AppButton>
       <AppModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
@@ -63,6 +71,11 @@ function App() {
           title="Posts List"
         />
       )}
+      <AppPagination
+        totalPages={totalPages}
+        currentPage={page}
+        changePage={changePage}
+      />
     </div>
   );
 }

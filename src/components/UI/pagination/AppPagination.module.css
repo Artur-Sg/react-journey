@@ -1,0 +1,14 @@
+.page {
+  margin: 0 5px;
+}
+
+.page__current {
+  border-width: 2px;
+  background-color: paleturquoise;
+  color: darkslategrey;
+  font-weight: bold;
+}
+
+.total {
+  padding: 10px 0;
+}
