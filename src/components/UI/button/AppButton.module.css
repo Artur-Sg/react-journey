@@ -1,0 +1,15 @@
+.appButton {
+  padding: 5px 15px;
+  color: teal;
+  font-size: 14px;
+  background: transparent;
+  border: 1px solid teal;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.appButton:disabled {
+  background-color: lightgray;
+  color: grey;
+  border: 1px solid grey;
+}
