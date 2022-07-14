@@ -43,18 +43,10 @@
   transition: all 500ms ease-in;
 }
 
-.navbar {
-  height: 50px;
+.post__bnts {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 15px;
-  list-style-type: none;
-  background-color: lightcyan;
-  border: 1px solid teal;
-  border-radius: 10px;
 }
 
-.navbar__link {
-  margin: auto;
+.post__bnts button:first-child {
+  margin-right: 10px;
 }
