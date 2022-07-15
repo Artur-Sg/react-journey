@@ -39,9 +39,9 @@ export const Post = () => {
         <AppLoader />
       ) : (
         <div>
-          <h5>
+          <h3>
             Post {post.id} '{post.title}''
-          </h5>
+          </h3>
           <p>{post.body}</p>
         </div>
       )}
@@ -51,9 +51,9 @@ export const Post = () => {
       ) : (
         comments.map(({ id, name, email, body }) => (
           <div key={id}>
-            <h3>
+            <h4>
               {name} {email}
-            </h3>
+            </h4>
             <p>{body}</p>
           </div>
         ))

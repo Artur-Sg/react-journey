@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppNavbar from './components/UI/navbar/AppNavbar';
 import AppRouter from './components/AppRouter';
 import './styles/app.css';
+import { AuthContext } from './context';
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('auth')) {
+      setIsAuth(true);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <AppNavbar />
-      <AppRouter />
-    </div>
+    <AuthContext.Provider value={{ isAuth, setIsAuth }}>
+      <div className="App">
+        <AppNavbar />
+        <AppRouter />
+      </div>
+    </AuthContext.Provider>
   );
 }
 
