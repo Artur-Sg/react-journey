@@ -11,13 +11,14 @@ import { PostFilter } from '../components/PostFilter';
 import { useFetch } from '../hooks/useFetch';
 import { getPageCount } from '../utils/pagination';
 import '../styles/app.css';
+import AppSelect from '../components/UI/select/AppSelect';
 
 function Posts() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
-  const [limit] = useState(10);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
 
   const [fetchPosts, isLoading, error] = useFetch(async (limit, page) => {
@@ -35,8 +36,8 @@ function Posts() {
   };
 
   useEffect(() => {
-    fetchPosts();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    fetchPosts(limit, page);
+  }, [page, limit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -55,6 +56,18 @@ function Posts() {
       </AppModal>
       <hr style={{ margin: '15px 0', color: 'teal' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
+      <AppSelect
+        value={limit}
+        onChange={(value) => setLimit(value)}
+        options={[
+          { value: 5, name: '5' },
+          { value: 10, name: '10' },
+          { value: 15, name: '15' },
+          { value: 20, name: '20' },
+          { value: -1, name: 'All' },
+        ]}
+        defaultOption={{ name: 'Items per page', value: 0 }}
+      />
 
       {error && (
         <h2 style={{ textAlign: 'center', color: 'red', margin: '15px 0px' }}>
