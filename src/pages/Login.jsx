@@ -4,7 +4,7 @@ import AppInput from '../components/UI/input/AppInput';
 import { AuthContext } from '../context';
 
 const Login = () => {
-  const { isAuth, setIsAuth } = useContext(AuthContext);
+  const { setIsAuth } = useContext(AuthContext);
   const login = (e) => {
     e.preventDefault();
     setIsAuth(true);

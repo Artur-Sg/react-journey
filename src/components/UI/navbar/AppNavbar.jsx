@@ -9,14 +9,17 @@ const AppNavbar = () => {
 
   const logOut = (e) => {
     setIsAuth(false);
-    localStorage.setItem('auth', false);
+    localStorage.removeItem('auth');
   };
 
   return (
     <ul className={classes.navbar}>
-      <li>
-        <AppButton onClick={logOut}>Log Out</AppButton>
-      </li>
+      {isAuth && (
+        <li>
+          <AppButton onClick={logOut}>Log Out</AppButton>
+        </li>
+      )}
+
       <li className={classes.navbar__link}>
         <Link to="about">About</Link>
       </li>
